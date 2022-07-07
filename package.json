@@ -1,0 +1,58 @@
+{
+  "name": "wallet-api",
+  "version": "1.0.0",
+  "description": "An api for wallet transactions",
+  "main": "index.ts",
+  "scripts": {
+    "start": "nodemon -e js,mjs,ts,json,yaml --exec ts-node -- index.ts",
+    "make-model": "npx sequelize-cli model:generate --name Walletx --attributes xxx:string",
+    "migrate": "npx sequelize-cli db:migrate",
+    "down": "npx sequelize-cli db:migrate:undo",
+    "make-seed": "npx sequelize-cli seed:generate --name wallet",
+    "seed": "npx sequelize-cli db:seed:all",
+    "undo-seed": "npx sequelize-cli db:seed:undo"
+  },
+  "author": "Babatunde Opesemowo",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/cli": "^7.18.6",
+    "@babel/core": "^7.18.6",
+    "@babel/preset-env": "^7.18.6",
+    "@babel/preset-typescript": "^7.18.6",
+    "axios": "^0.27.2",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "cron": "^2.0.0",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-validator": "^6.14.2",
+    "moment": "^2.29.3",
+    "nodemon": "^2.0.18",
+    "pg": "^8.7.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.21.0",
+    "swagger-ui-express": "^4.4.0",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "@babel/node": "^7.18.6",
+    "@types/cors": "^2.8.12",
+    "@types/cron": "^2.0.0",
+    "@types/express": "^4.17.13",
+    "@types/node": "^18.0.3",
+    "@types/sequelize": "^4.28.14",
+    "@types/swagger-ui-express": "^4.1.3",
+    "@types/yamljs": "^0.2.31",
+    "eslint": "8.18.0",
+    "eslint-config-next": "12.1.6",
+    "sequelize-cli": "^6.4.1",
+    "ts-node": "^10.8.2",
+    "typescript": "^4.7.4"
+  },
+  "engines": {
+    "node": "16.15.1"
+  }
+}

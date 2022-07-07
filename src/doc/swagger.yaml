@@ -1,0 +1,117 @@
+swagger: "2.0"
+info:
+  description: "An API for sending and receiving whatsapp messages seemlessly"
+  version: "1.0.0"
+  title: "Wallet API"
+  contact:
+    email: "tunexlevel8@gmail.com"
+host: "localhost:8001/v1"
+tags:
+  - name: "user"
+    description: "Everything about user"
+  - name: "transaction"
+    description: "Everthing about transaction"
+paths:
+  /user/new:
+    post:
+      tags:
+        - "user"
+      summary: "Create a new user account"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "The content of the message"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        "400":
+          description: "Invalid response"
+        "200":
+          description: "Successful response"
+  /user/{wallet_id}:
+    get:
+      tags:
+        - "user"
+      summary: "Get a user details by their wallet id"
+      parameters:
+        - in: "path"
+          name: "wallet_id"
+          description: "The wallet id of the user to send funds"
+          example: "1069538862"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Invalid response"
+        "200":
+          description: "Successful response"
+  /transfer:
+    post:
+      tags:
+        - "transaction"
+      summary: "Create a new transfer transaction"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/Transaction"
+      responses:
+        "400":
+          description: "Invalid response"
+        "200":
+          description: "Successful response"
+  /history/{id}:
+    get:
+      tags:
+        - "transaction"
+      summary: "Get transaction for a user"
+      parameters:
+        - in: "path"
+          name: "id"
+          description: "The wallet id or user id"
+          example: "100000000"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Invalid response"
+        "200":
+          description: "Successful response"
+definitions:
+  User:
+    type: "object"
+    properties:
+      first_name:
+        type: "string"
+        description: "First name of the user"
+        example: "Babs"
+      last_name:
+        type: "string"
+        example: "Opesh"
+      email:
+        type: "string"
+        example: "babs@gmail.com"
+      password:
+        type: "string"
+        description: "The password must be at least 7 characters"
+        example: "1234567"
+  Transaction:
+    type: "object"
+    properties:
+      sender_wallet_id: 
+        type: "number"
+        description: "The wallet id of the sender"
+        example: "1000000000"
+      receiver_wallet_id: 
+        type: "number"
+        description: "The wallet id of the beneficiary"
+        example: "1000000001"
+      amount: 
+        type: "number"
+        description: "The amount of the transaction"
+        example: "100"
+      
