@@ -14,7 +14,14 @@ const app = express();
 
 let server = http.createServer(app);
 
-const swaggerDocument = Yaml.load('./src/doc/swagger.yaml');
+let swaggerDocument
+
+if(process.env.NODE_ENV === "production"){
+    swaggerDocument = Yaml.load('./src/doc/production.yaml');
+}
+else{
+    swaggerDocument = Yaml.load('./src/doc/development.yaml');
+}
 
 
 console.log("OK. Deployment mode set to ", process.env.PORT);

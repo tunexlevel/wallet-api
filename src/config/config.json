@@ -15,7 +15,7 @@
   },
   "production": {
     "username": "levgtkiwqrcdgl",
-    "password": "16c94b196cd5c1939e63addbd49560f5be9537a91610da9b9f39c786c99ee832",
+    "password": "16c94b196cd5c1939e63addbd495c786c99ee832",
     "database": "db8g852imfeipk",
     "host": "ec2-44-206-11-200.compute-1.amazonaws.com",
     "dialect": "postgres",
