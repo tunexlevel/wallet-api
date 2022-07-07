@@ -33,7 +33,7 @@ transactionRouter.get("/history/:id", async (req: Request, res: Response) => {
     return res.status(reply.status).json(reply);
 });
 
-transactionRouter.post("/jobs", async (req: Request, res: Response) => {
+transactionRouter.get("/batch-transactions", async (req: Request, res: Response) => {
 
     const txn = new transactionController()
 

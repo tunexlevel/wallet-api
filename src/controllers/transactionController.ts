@@ -196,7 +196,11 @@ class transactionController extends userController {
     }
 
     async txnJobs() {
-        const txns = await Batch.findAll();
+        const txns = await Batch.findAll({attributes:
+            ['id', 'user_id', 'type', 'flag', 'session_id',
+            'credit_wallet_id', 'debit_wallet_id', 
+            'amount', 'transaction_date', 'status', 'created_at']
+        });
         if(txns.length < 1){
             return {status: 200, message: "No jobs found yet"}
         }

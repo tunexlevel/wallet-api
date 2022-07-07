@@ -81,6 +81,16 @@ paths:
           description: "Invalid response"
         "200":
           description: "Successful response"
+  /batch-transactions:
+    get:
+      tags:
+        - "transaction"
+      summary: "Get transaction for carring out between 7am to 3pm"
+      responses:
+        "400":
+          description: "Invalid response"
+        "200":
+          description: "Successful response"
 definitions:
   User:
     type: "object"
