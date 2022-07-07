@@ -67,7 +67,7 @@ paths:
     get:
       tags:
         - "transaction"
-      summary: "Get transaction for a user"
+      summary: "Get transaction history for a user"
       parameters:
         - in: "path"
           name: "id"
