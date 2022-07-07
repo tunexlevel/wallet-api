@@ -35,6 +35,9 @@ class transactionController extends userController {
     protected description!: string
     protected sender_wallet_id!: number
     protected receiver_wallet_id!: number
+    protected session_id!: number
+    protected transaction_date!: string
+    protected user_id!: string
 
     //setup new user with an active
     async transfer(data: TransferType) {
@@ -51,18 +54,22 @@ class transactionController extends userController {
             //validate balance before fund transfer
             const check = await this.validateFundTransfer();
 
+            const session_id = moment().format('x').toString() + check?.userId;
+
+            const transaction_date = moment().format('YYYY-MM-DD HH:mm:ss');
+
+
             if (check.status !== 200 || !check?.userId 
                 || !check?.sBalance 
                 || !check?.rBalance 
                 || !check?.rName
                 || !check?.sName
             ) {
+                if(check?.sName && check?.sBalance && check?.userId){
+                    this.failedTxn(check.sName, check.sBalance, session_id, check.userId )
+                }
                 return check;
             }
-
-            const session_id = moment().format('x').toString() + check.userId.toString();
-
-            const transaction_date = moment().format('YYYY-MM-DD HH:mm:ss');
 
             //save transaction
             await WalletTransaction.create({
@@ -169,6 +176,7 @@ class transactionController extends userController {
                 return { status: 400, message: "You can't send zero amount" };
             }
             else if ((sendUser.balance - this.amount) < 0) {
+
                 return { status: 400, message: "Insuffucient fund" };
             }
 
@@ -206,6 +214,34 @@ class transactionController extends userController {
         }
 
         return {status: 200, lists: txns}
+    }
+
+    async failedTxn(name:string, balance:number, session_id: string, user_id: number) {
+        await WalletTransaction.create({
+            amount: this.amount,
+            session_id: session_id,
+            credit_wallet_id: this.receiver_wallet_id,
+            debit_wallet_id: this.sender_wallet_id,
+            user_id: user_id,
+            status: "Failed",
+            transaction_date: this.transaction_date,
+            created_at: new Date()
+        })
+
+        await HistoryTransaction.create({
+            session_id: session_id,
+            user_id: this.sender_wallet_id,
+            recipient_id: this.receiver_wallet_id,
+            recipient_name: name,
+            status: "Failed",
+            type: 'Debit',
+            credit_wallet_id: this.receiver_wallet_id,
+            debit_wallet_id: this.sender_wallet_id,
+            amount: this.amount,
+            transaction_date: this.transaction_date,
+            pre_balance: balance,
+            post_balance: balance
+        })
     }
 
 }
