@@ -6,7 +6,7 @@ import sequelizeConnection from './index'
 interface BatchAttributes {
   session_id: string,
   user_id: number,
-  type: string,
+  type: 'Transfer' | 'Deposit',
   flag: 'peak_hours' | 'off_peak_hours',
   credit_wallet_id: number,
   debit_wallet_id: number,
@@ -24,7 +24,7 @@ export interface BatchOutput extends Required<BatchAttributes> { }
 class Batch extends Model<BatchAttributes, BatchInput> implements BatchAttributes {
   public session_id!: string
   public user_id!: number
-  public type!: string
+  public type: 'Transfer' | 'Deposit' = 'Transfer'
   public flag: 'peak_hours' | 'off_peak_hours' = 'off_peak_hours'
   public credit_wallet_id!: number
   public debit_wallet_id!: number

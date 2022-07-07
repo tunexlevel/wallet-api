@@ -7,7 +7,7 @@ import sequelizeConnection from './index'
 interface TransactionAttributes {
   session_id: string,
   user_id: number,
-  type?: 'Transfer' | 'Deposit',
+  type: 'Transfer' | 'Deposit',
   credit_wallet_id: number,
   debit_wallet_id: number,
   amount: number,

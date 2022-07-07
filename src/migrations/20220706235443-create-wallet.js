@@ -171,14 +171,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DOUBLE
       },
-      recipient_id: {
-        allowNull: false,
-        type: Sequelize.BIGINT
-      },
-      recipient_name: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
       status: {
         allowNull: false,
         type: Sequelize.STRING(30)

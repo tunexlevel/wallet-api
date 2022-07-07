@@ -7,9 +7,8 @@ import { Op } from "sequelize";
 
 class jobs {
     async transaction() {
-        console.log(moment().format('YYYY-MM-DD HH:mm:ss'),  'Cron Job Seen')
         
-        const newCron = new CronJob('*/1 * * * *', async function () {
+        const newCron = new CronJob('*/5 7-15 * * *', async function () {
             console.log(moment().format('YYYY-MM-DD HH:mm:ss'),  'TXN JOB STARTED')
             const startTime = moment().format('YYYY-MM-DD HH:mm:ss')
             const endTime = moment().format('YYYY-MM-DD 15:00:00')
@@ -23,7 +22,9 @@ class jobs {
                 const txn = await Txn.findAll({
                     where: {
                         created_at:
-                            { [Op.between]: [startTime, endTime] }
+                            { [Op.between]: [startTime, endTime] },
+                        amount: 
+                            { [Op.gt]: 1500}
                     }
                 })
     
@@ -38,18 +39,20 @@ class jobs {
                     if (seven_am_unix <= timer || timer <= two_45pm_unix) {
                         flag = "peak_hours"
                     }
-                    return { ...r, flag: flag }
+                    return { ...r.get(), flag: flag }
                 })
-    
+
                 let batchEntries = [];
+                console.log(rows);
                 if(rows.length > 0){
-                     batchEntries = await Batch.bulkCreate(rows)
+                     batchEntries = await Batch.bulkCreate(rows, {ignoreDuplicates: true})
                 }
     
                 console.log(moment().format('YYYY-MM-DD HH:mm:ss'),  'ROWS:', batchEntries.length)
                 console.log(moment().format('YYYY-MM-DD HH:mm:ss'),  'TXN JOB COMPLETED')
             }
             catch(e){
+                console.log(e)
                 console.log(moment().format('YYYY-MM-DD HH:mm:ss'),  'TXN JOB FAILED')
             }
         })
