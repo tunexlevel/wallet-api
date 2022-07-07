@@ -190,7 +190,7 @@ class transactionController extends userController {
         if(!user?.user_id){
             return {status: 400, message: "User id not found"}
         }
-        const txnHistory = await HistoryTransaction.findAll({attributes:['amount', 'type', 'transaction_date', 'credit_wallet_id', 'debit_wallet_id'], where: { user_id: id } });
+        const txnHistory = await HistoryTransaction.findAll({attributes:['amount', 'type', 'transaction_date', 'user_id', 'recipient_id', 'recipient_name', 'status'], where: { user_id: id } });
 
         return {status: 200, history:txnHistory}
     }
