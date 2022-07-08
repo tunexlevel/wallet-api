@@ -5,7 +5,7 @@ info:
   title: "Wallet API"
   contact:
     email: "tunexlevel8@gmail.com"
-host: "localhost:8001/v1"
+host: "localhost:8002/v1"
 tags:
   - name: "user"
     description: "Everything about user"
