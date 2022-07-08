@@ -9,9 +9,25 @@ const dbHost = process.env.DB_HOST
 const dbDriver = process.env.DB_DRIVER as Dialect
 const dbPassword = process.env.DB_PASSWORD
 
-const sequelizeConnection = new Sequelize(dbName, dbUser, dbPassword, {
+let options = {
   host: dbHost,
-  dialect: dbDriver
-})
+  dialect: dbDriver,
+  dialectOptions: {}
+};
+
+if (process.env.NODE_ENV === 'production') {
+  options = {
+    host: dbHost,
+    dialect: dbDriver,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    }
+  }
+}
+
+const sequelizeConnection = new Sequelize(dbName, dbUser, dbPassword, options)
 
 export default sequelizeConnection
