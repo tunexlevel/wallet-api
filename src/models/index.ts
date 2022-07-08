@@ -34,8 +34,6 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
-console.log(options)
-
 const sequelizeConnection = new Sequelize(options)
 
 export default sequelizeConnection

@@ -34,6 +34,5 @@ if (process.env.NODE_ENV === 'production') {
         }
     };
 }
-console.log(options);
 const sequelizeConnection = new sequelize_1.Sequelize(options);
 exports.default = sequelizeConnection;
