@@ -10,24 +10,22 @@ const dbDriver = process.env.DB_DRIVER as Dialect
 const dbPassword = process.env.DB_PASSWORD
 
 let options = {
-  host: dbHost,
-  dialect: dbDriver,
-  dialectOptions: {
+    host: dbHost,
+    dialect: dbDriver,
     username: dbUser,
     password: dbPassword,
     database: dbName,
-    ssl: {}
-  }
+    dialectOptions: { }
 };
 
 if (process.env.NODE_ENV === 'production') {
   options = {
     host: dbHost,
     dialect: dbDriver,
+    username: dbUser,
+    password: dbPassword,
+    database: dbName,
     dialectOptions: {
-      username: dbUser,
-      password: dbPassword,
-      database: dbName,
       ssl: {
         require: true,
         rejectUnauthorized: false
@@ -35,9 +33,8 @@ if (process.env.NODE_ENV === 'production') {
     }
   }
 }
-else {
 
-}
+console.log(options)
 
 const sequelizeConnection = new Sequelize(options)
 
