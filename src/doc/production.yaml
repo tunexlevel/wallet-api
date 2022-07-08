@@ -5,7 +5,7 @@ info:
   title: "Wallet API"
   contact:
     email: "tunexlevel8@gmail.com"
-host: "walletapi-io.herokuapp.com"
+host: "walletapi-io.herokuapp.com/v1"
 tags:
   - name: "user"
     description: "Everything about user"
