@@ -67,18 +67,13 @@ class userController {
         this.email = data.email;
         this.password = data.password;
 
-        const check = await User.findOne({attributes:['id', 'salt'], where:{email:this.email}})
+        const check = await User.findOne({attributes:['id', 'salt', 'password'], where:{email:this.email}})
 
         if(!check?.id){
             return {status: 400, message: "Invalid login credentails"}
         }
 
-        
-        const hash = pbkdf2Sync(this.password, check.salt, 1000, 64, `sha512`).toString(`hex`);
-
-        const user = await User.findOne({attributes:['id'], where:{email:this.email, password:hash}})
-
-        if(!user?.id){
+        if(!this.validatePassword(this.password, check.salt, check.password)){
             return {status: 400, message: "Invalid login credentails"}
         }
 
@@ -86,13 +81,12 @@ class userController {
         const password = pbkdf2Sync(this.password, salt, 1000, 64, `sha512`).toString(`hex`);
         const token = pbkdf2Sync(this.email, salt, 1000, 64, `sha512`).toString(`hex`);
 
-
         try {
             
             await User.update({
                 password: password,
                 salt: salt,
-                //token: token
+                token: token
             }, { where: {email: this.email} })
 
 
@@ -123,10 +117,35 @@ class userController {
         }
     }
 
+    async validateToken(token: string) {
 
-    validatePassword(password: string, salt: string) {
+        try{
+            const user = await User.findOne({attributes:['email', 'last_seen', 'id'], where: [{ token }] });
+
+            if(!user?.id || user.last_seen === ''){
+                return {status: 400, message: "Invalid token!"}
+            }
+            
+            const timeInterval = moment().diff(user.last_seen, 'minutes')
+    
+            if(timeInterval > 15){
+                return {status: 400, message: "Inactive for a while, kindly login again!"}
+            }
+    
+            user.update({last_seen: moment().format('YYYY-MM-DD HH:mm:ss')})
+    
+            return {status: 200, message: "Active user!"}
+        }
+        catch(e){
+            return {status: 400, message: "Failed to fetch user"}
+        }
+
+        
+    }
+
+    validatePassword(password: string, salt: string, originalPassword: string) {
         const hash = pbkdf2Sync(password, salt, 1000, 64, `sha512`).toString(`hex`);
-        return hash === password;
+        return hash === originalPassword;
     }
 
 }

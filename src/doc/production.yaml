@@ -11,12 +11,21 @@ tags:
     description: "Everything about user"
   - name: "transaction"
     description: "Everthing about transaction"
+securityDefinitions:
+  APIKeyHeader:
+    type: apiKey
+    in: "header"
+    name: "token"
+security:
+  - APIKeyHeader: []  #
 paths:
   /user/new:
     post:
       tags:
         - "user"
       summary: "Create a new user account"
+      security: 
+        - []
       parameters:
         - in: "body"
           name: "body"
@@ -34,6 +43,8 @@ paths:
       tags:
         - "user"
       summary: "Login to a user account"
+      security: 
+        - []
       parameters:
         - in: "body"
           name: "body"
@@ -62,6 +73,8 @@ paths:
       responses:
         "400":
           description: "Invalid response"
+        "401":
+           $ref: '#/responses/UnauthorizedError'
         "200":
           description: "Successful response"
   /transfer:
@@ -84,7 +97,7 @@ paths:
     get:
       tags:
         - "transaction"
-      summary: "Get transaction for a user"
+      summary: "Get transaction history for a user"
       parameters:
         - in: "path"
           name: "id"
@@ -151,4 +164,10 @@ definitions:
         type: "number"
         description: "The amount of the transaction"
         example: "100"
-      
+responses:
+  UnauthorizedError:
+    description: Authentication information is missing or invalid
+    headers:
+      WWW_Authenticate:
+        schema:
+          type: string

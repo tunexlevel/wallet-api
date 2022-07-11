@@ -36,6 +36,9 @@ module.exports = {
       token: {
         type: Sequelize.STRING
       },
+      last_seen: {
+        type: Sequelize.STRING
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE

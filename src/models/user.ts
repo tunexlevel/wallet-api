@@ -12,6 +12,7 @@ export interface UserAttributes {
   password: string,
   salt: string,
   token?: string,
+  last_seen?: string,
 }
 
 export interface UserInput extends Optional<UserAttributes, 'id'> { }
@@ -26,7 +27,8 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
   public email!: string
   public password!: string
   public salt!: string
-  public token!: string
+  public token!: string | undefined
+  public last_seen?: string | undefined
 
   // timestamps!
   public readonly created_at!: Date;
@@ -59,6 +61,9 @@ User.init({
     type: DataTypes.STRING
   },
   token: {
+    type: DataTypes.STRING
+  },
+  last_seen: {
     type: DataTypes.STRING
   }
 }, {
