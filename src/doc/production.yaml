@@ -73,8 +73,6 @@ paths:
       responses:
         "400":
           description: "Invalid response"
-        "401":
-           $ref: '#/responses/UnauthorizedError'
         "200":
           description: "Successful response"
   /transfer:
@@ -164,10 +162,3 @@ definitions:
         type: "number"
         description: "The amount of the transaction"
         example: "100"
-responses:
-  UnauthorizedError:
-    description: Authentication information is missing or invalid
-    headers:
-      WWW_Authenticate:
-        schema:
-          type: string
