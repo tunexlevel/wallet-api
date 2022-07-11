@@ -86,7 +86,8 @@ class userController {
             await User.update({
                 password: password,
                 salt: salt,
-                token: token
+                token: token,
+                last_seen: moment().format('YYYY-MM-DD HH:mm:ss')
             }, { where: {email: this.email} })
 
 
@@ -100,7 +101,7 @@ class userController {
     async getUserByWalletId(id: number) {
 
         try {
-
+            
             const wallet = await Wallet.findOne({attributes:['user_id'], where: [{ wallet_id: id }] });
 
             if (!wallet?.user_id) {
@@ -127,7 +128,7 @@ class userController {
             }
             
             const timeInterval = moment().diff(user.last_seen, 'minutes')
-    
+
             if(timeInterval > 15){
                 return {status: 400, message: "Inactive for a while, kindly login again!"}
             }

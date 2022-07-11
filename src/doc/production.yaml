@@ -97,7 +97,7 @@ paths:
     get:
       tags:
         - "transaction"
-      summary: "Get transaction history for a user"
+      summary: "Get transaction carried out between 7am to 3pm"
       parameters:
         - in: "path"
           name: "id"

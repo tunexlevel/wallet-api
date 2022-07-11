@@ -53,6 +53,11 @@ userRouter.get("/:wallet_id", async (req: Request, res: Response) => {
     if (!req.params.wallet_id) {
         return res.status(400).json({ error: "The wallet id is required" });
     }
+
+    if(isNaN(parseInt(req.params.wallet_id))){
+        return res.status(400).json({ status: 400, message: "Invalid wallet id. It must be numeric"})
+    }
+
     const user = new userController()
     const reply = await user.getUserByWalletId(parseInt(req.params.wallet_id));
 
