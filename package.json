@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "An api for wallet transactions",
   "scripts": {
-    "dev": "nodemon -e js,mjs,json,yaml --exec  ts-node -- index.ts",
+    "dev": "nodemon -e js,mjs,json,yaml,ts --exec  ts-node -- index.ts",
     "start": "nodemon -e js,mjs,json,yaml  -- dist/index.js",
     "make-model": "npx sequelize-cli model:generate --name Walletx --attributes xxx:string",
     "migrate": "npx sequelize-cli  db:migrate",

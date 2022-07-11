@@ -30,7 +30,7 @@ server.listen(process.env.PORT);
 
 console.log("App running on this port ", process.env.PORT);
 
-startJobs();
+//startJobs();
 
 app.use(cors());
 

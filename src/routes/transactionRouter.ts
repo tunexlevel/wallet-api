@@ -1,6 +1,4 @@
 import {Router, Request, Response } from "express";
-import { Query, ParamsDictionary } from 'express-serve-static-core';
-import userController from "../controllers/userController";
 import { checkSchema,  validationResult } from 'express-validator';
 import { Transfer } from "../schema/transaction";
 import transactionController from "../controllers/transactionController";

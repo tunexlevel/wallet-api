@@ -29,6 +29,23 @@ paths:
           description: "Invalid response"
         "200":
           description: "Successful response"
+  /user/login:
+    post:
+      tags:
+        - "user"
+      summary: "Login to a user account"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "The content of the message"
+          required: true
+          schema:
+            $ref: "#/definitions/Login"
+      responses:
+        "400":
+          description: "Invalid response"
+        "200":
+          description: "Successful response"
   /user/{wallet_id}:
     get:
       tags:
@@ -102,6 +119,16 @@ definitions:
       last_name:
         type: "string"
         example: "Opesh"
+      email:
+        type: "string"
+        example: "babs@gmail.com"
+      password:
+        type: "string"
+        description: "The password must be at least 7 characters"
+        example: "1234567"
+  Login:
+    type: "object"
+    properties:
       email:
         type: "string"
         example: "babs@gmail.com"

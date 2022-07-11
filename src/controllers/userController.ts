@@ -62,10 +62,50 @@ class userController {
         }
     }
 
+    async login (data: UserAttributes) {
+
+        this.email = data.email;
+        this.password = data.password;
+
+        const check = await User.findOne({attributes:['id', 'salt'], where:{email:this.email}})
+
+        if(!check?.id){
+            return {status: 400, message: "Invalid login credentails"}
+        }
+
+        
+        const hash = pbkdf2Sync(this.password, check.salt, 1000, 64, `sha512`).toString(`hex`);
+
+        const user = await User.findOne({attributes:['id'], where:{email:this.email, password:hash}})
+
+        if(!user?.id){
+            return {status: 400, message: "Invalid login credentails"}
+        }
+
+        const salt = randomBytes(16).toString('hex');
+        const password = pbkdf2Sync(this.password, salt, 1000, 64, `sha512`).toString(`hex`);
+        const token = pbkdf2Sync(this.email, salt, 1000, 64, `sha512`).toString(`hex`);
+
+
+        try {
+            
+            await User.update({
+                password: password,
+                salt: salt,
+                //token: token
+            }, { where: {email: this.email} })
+
+
+            return { status: 200, message: "The user was login successfully", token}
+        }
+        catch (e) {
+            return { status: 400, message: "Failed to login account", reason: e }
+        }
+    }
+
     async getUserByWalletId(id: number) {
 
         try {
-
 
             const wallet = await Wallet.findOne({attributes:['user_id'], where: [{ wallet_id: id }] });
 

@@ -29,21 +29,20 @@ export const createAccount = () => {
 }
  
 
-export const messageKey = () => {
+export const login = () => {
     return {
-        phone_no: {
+        email: {
             exists: {
-                errorMessage: 'The phone number is required',
+                errorMessage: 'The email is required',
+            },
+            isEmail: {
+                bail: true,
             },
         },
-        message: {
-            exists: {
-                errorMessage: 'The message is required',
-            },
-        },
-        key: {
-            exists: {
-                errorMessage: 'The api key  is required',
+        password: {
+            isLength: {
+                errorMessage: 'Password should be at least 7 chars long',
+                options: { min: 7 },
             },
         },
     }
