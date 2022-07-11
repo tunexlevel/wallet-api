@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = __importDefault(require("../models/user"));
+const moment_1 = __importDefault(require("moment"));
 const wallet_1 = __importDefault(require("../models/wallet"));
 const index_1 = __importDefault(require("../models/index"));
 const crypto_1 = require("crypto");
@@ -56,6 +57,34 @@ class userController {
             }
         });
     }
+    login(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.email = data.email;
+            this.password = data.password;
+            const check = yield user_1.default.findOne({ attributes: ['id', 'salt', 'password'], where: { email: this.email } });
+            if (!(check === null || check === void 0 ? void 0 : check.id)) {
+                return { status: 400, message: "Invalid login credentails" };
+            }
+            if (!this.validatePassword(this.password, check.salt, check.password)) {
+                return { status: 400, message: "Invalid login credentails" };
+            }
+            const salt = (0, crypto_1.randomBytes)(16).toString('hex');
+            const password = (0, crypto_1.pbkdf2Sync)(this.password, salt, 1000, 64, `sha512`).toString(`hex`);
+            const token = (0, crypto_1.pbkdf2Sync)(this.email, salt, 1000, 64, `sha512`).toString(`hex`);
+            try {
+                yield user_1.default.update({
+                    password: password,
+                    salt: salt,
+                    token: token,
+                    last_seen: (0, moment_1.default)().format('YYYY-MM-DD HH:mm:ss')
+                }, { where: { email: this.email } });
+                return { status: 200, message: "The user was login successfully", token };
+            }
+            catch (e) {
+                return { status: 400, message: "Failed to login account", reason: e };
+            }
+        });
+    }
     getUserByWalletId(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -71,9 +100,28 @@ class userController {
             }
         });
     }
-    validatePassword(password, salt) {
+    validateToken(token) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = yield user_1.default.findOne({ attributes: ['email', 'last_seen', 'id'], where: [{ token }] });
+                if (!(user === null || user === void 0 ? void 0 : user.id) || user.last_seen === '') {
+                    return { status: 400, message: "Invalid token!" };
+                }
+                const timeInterval = (0, moment_1.default)().diff(user.last_seen, 'minutes');
+                if (timeInterval > 15) {
+                    return { status: 400, message: "Inactive for a while, kindly login again!" };
+                }
+                user.update({ last_seen: (0, moment_1.default)().format('YYYY-MM-DD HH:mm:ss') });
+                return { status: 200, message: "Active user!" };
+            }
+            catch (e) {
+                return { status: 400, message: "Failed to fetch user" };
+            }
+        });
+    }
+    validatePassword(password, salt, originalPassword) {
         const hash = (0, crypto_1.pbkdf2Sync)(password, salt, 1000, 64, `sha512`).toString(`hex`);
-        return hash === password;
+        return hash === originalPassword;
     }
 }
 exports.default = userController;

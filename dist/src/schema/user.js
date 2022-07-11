@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.templateMessage = exports.messageKey = exports.createAccount = void 0;
+exports.templateMessage = exports.login = exports.createAccount = void 0;
 const createAccount = () => {
     return {
         first_name: {
@@ -30,26 +30,25 @@ const createAccount = () => {
     };
 };
 exports.createAccount = createAccount;
-const messageKey = () => {
+const login = () => {
     return {
-        phone_no: {
+        email: {
             exists: {
-                errorMessage: 'The phone number is required',
+                errorMessage: 'The email is required',
+            },
+            isEmail: {
+                bail: true,
             },
         },
-        message: {
-            exists: {
-                errorMessage: 'The message is required',
-            },
-        },
-        key: {
-            exists: {
-                errorMessage: 'The api key  is required',
+        password: {
+            isLength: {
+                errorMessage: 'Password should be at least 7 chars long',
+                options: { min: 7 },
             },
         },
     };
 };
-exports.messageKey = messageKey;
+exports.login = login;
 const templateMessage = () => {
     return {
         phone_no: {

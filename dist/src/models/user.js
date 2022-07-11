@@ -31,6 +31,12 @@ User.init({
     },
     salt: {
         type: sequelize_1.DataTypes.STRING
+    },
+    token: {
+        type: sequelize_1.DataTypes.STRING
+    },
+    last_seen: {
+        type: sequelize_1.DataTypes.STRING
     }
 }, {
     timestamps: true,

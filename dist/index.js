@@ -11,21 +11,20 @@ const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const yamljs_1 = __importDefault(require("yamljs"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const index_1 = __importDefault(require("./src/routes/index"));
-const index_2 = __importDefault(require("./src/cron/index"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 let server = http_1.default.createServer(app);
 let swaggerDocument;
 if (process.env.NODE_ENV === "production") {
-    swaggerDocument = yamljs_1.default.load('./src/doc/production.yaml');
+    swaggerDocument = yamljs_1.default.load('./doc/production.yaml');
 }
 else {
-    swaggerDocument = yamljs_1.default.load('./src/doc/development.yaml');
+    swaggerDocument = yamljs_1.default.load('./doc/development.yaml');
 }
 console.log("OK. Deployment mode set to ", process.env.PORT);
 server.listen(process.env.PORT);
 console.log("App running on this port ", process.env.PORT);
-(0, index_2.default)();
+//startJobs();
 app.use((0, cors_1.default)());
 app.use(body_parser_1.default.json({ limit: "50mb" }));
 app.use(body_parser_1.default.urlencoded({ limit: "50mb", parameterLimit: 100000, extended: true }));

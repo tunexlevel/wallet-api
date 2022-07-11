@@ -17,10 +17,10 @@ let server = http.createServer(app);
 let swaggerDocument
 
 if(process.env.NODE_ENV === "production"){
-    swaggerDocument = Yaml.load('./src/doc/production.yaml');
+    swaggerDocument = Yaml.load('./doc/production.yaml');
 }
 else{
-    swaggerDocument = Yaml.load('./src/doc/development.yaml');
+    swaggerDocument = Yaml.load('./doc/development.yaml');
 }
 
 
