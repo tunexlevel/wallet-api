@@ -10,15 +10,13 @@
 
 4. Rename the .env.example file to .env and update the variables with the database credentials created
 
-5. Also update .src/config/config.json file with database crendentials also for the cli
+5. Create the tables by running this command on the terminal - npm run migrate
 
-6. Create the tables by running this command on the terminal - npm run migrate
+6. Update the doc files with the host url for the api documentations
 
-7. Update the src/doc files with the host url for the api documentations
+7. Start the application by runing - npm run dev
 
-8. Start the application by runing - npm run dev
-
-9. You can access the application on hosturl:port/api-docs
+8. You can access the application on hosturl:port/ and documentation on hosturl:port/api-docs
 
 
 
