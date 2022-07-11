@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: "An API for sending and receiving whatsapp messages seemlessly"
+  description: "An API for sending and receiving funds in a wallet perspective"
   version: "1.0.0"
   title: "Wallet API"
   contact:
